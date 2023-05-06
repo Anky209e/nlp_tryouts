@@ -12,7 +12,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 all_chars = string.printable
 n_characters = len(all_chars)
 
-file = unidecode.unidecode(open("names.txt").read())
+file = unidecode.unidecode(open("robert_frost.txt").read())
 
 
 class RNN(nn.Module):
@@ -47,7 +47,7 @@ class Generator():
         self.chunk_len = 200
         self.num_epoch = 2000
         self.batch_size = 1
-        self.print_every = 20
+        self.print_every = 5
         self.hidden_size = 120
         self.num_layers = 2
         self.lr = 0.003
@@ -76,7 +76,7 @@ class Generator():
         
         return text_input.long(),text_target.long()
 
-    def generate(self,initial_str='A',prediction_len=100,temprature=0.85):
+    def generate(self,initial_str='A',prediction_len=200,temprature=0.85):
         hidden,cell = self.rnn.init_hidden(self.batch_size)
         initial_input = self.char_tensor(initial_str)
         predicted = initial_str
@@ -132,15 +132,13 @@ class Generator():
             loss = loss.item()/self.chunk_len
 
             if epoch % self.print_every == 0:
-                print(f"===> Loss:{loss}")
+                print(f"===> Epoch:{epoch} ==> Loss:{loss}")
                 f_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 initial_letter = f_chars[random.randint(0,len(f_chars)-1)]
                 print(f"-----\n{self.generate(initial_str=initial_letter)}\n-----")
-        self.save_weights(f"weights_{epoch}.pth")
+        self.save_weights(f"robert_frost_weights_{epoch}.pth")
 
 
 
 name_gen_1 = Generator()
 name_gen_1.train()
-
-
