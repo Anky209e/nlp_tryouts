@@ -12,7 +12,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 all_chars = string.printable
 n_characters = len(all_chars)
 
-file = unidecode.unidecode(open("wiki_data.txt").read())
+file = unidecode.unidecode(open("robert_frost.txt").read())
 
 
 class RNN(nn.Module):
@@ -44,11 +44,11 @@ class RNN(nn.Module):
 
 class Generator():
     def __init__(self):
-        self.chunk_len = 500
+        self.chunk_len = 250
         self.num_epoch = 2000
         self.batch_size = 1
         self.print_every = 2
-        self.hidden_size = 120
+        self.hidden_size = 250
         self.num_layers = 2
         self.lr = 0.003
 
@@ -102,6 +102,9 @@ class Generator():
     
     def save_weights(self,filename):
         torch.save(self.rnn.state_dict(),filename)
+    
+    def load_weights(self,filename):
+        self.rnn.load_state_dict(torch.load(filename))
 
 
     def train(self):
@@ -136,7 +139,7 @@ class Generator():
                 f_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 initial_letter = f_chars[random.randint(0,len(f_chars)-1)]
                 print(f"-----\n{self.generate(initial_str=initial_letter)}\n-----")
-        self.save_weights(f"wiki_data_weights_{epoch}.pth")
+        self.save_weights(f"robert_data_weights_{epoch}.pth")
 
 
 
