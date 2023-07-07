@@ -22,7 +22,7 @@ class RNN(nn.Module):
         self.hidden_size = hidden_size
         self.num_layers = num_layers
         # Input_size is max no of characters hidden size is dimension of embedding
-        self.embed = nn.Embedding(input_size,hidden_size) 
+        self.embed = nn.Embedding(input_size,hidden_size)
         self.lstm = nn.LSTM(hidden_size,hidden_size,num_layers,batch_first=True)
         self.fc = nn.Linear(hidden_size,output_size)
     
@@ -44,12 +44,12 @@ class RNN(nn.Module):
 
 class Generator():
     def __init__(self):
-        self.chunk_len = 250
-        self.num_epoch = 2000
+        self.chunk_len = 275
+        self.num_epoch = 3000
         self.batch_size = 1
-        self.print_every = 2
-        self.hidden_size = 250
-        self.num_layers = 2
+        self.print_every = 5
+        self.hidden_size = 300
+        self.num_layers = 3
         self.lr = 0.003
 
     def char_tensor(self,string):
@@ -139,7 +139,7 @@ class Generator():
                 f_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 initial_letter = f_chars[random.randint(0,len(f_chars)-1)]
                 print(f"-----\n{self.generate(initial_str=initial_letter)}\n-----")
-        self.save_weights(f"robert_data_weights_{epoch}.pth")
+        self.save_weights(f"test_weights_{epoch}.pth")
 
 
 
